@@ -72,4 +72,10 @@ export class UserService {
 
     return id;
   }
+
+  async uploadAvatar(userId: number, avatar: string): Promise<string> {
+    await this.updateUser(userId, { avatar });
+
+    return avatar;
+  }
 }

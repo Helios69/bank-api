@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Account } from 'src/account/account.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  JoinColumn,
+  OneToOne,
+} from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -25,4 +32,8 @@ export class User {
 
   @Column({ nullable: true })
   avatar: string;
+
+  @OneToOne(() => Account, { eager: true, cascade: true })
+  @JoinColumn()
+  account: Account;
 }

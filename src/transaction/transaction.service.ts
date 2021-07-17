@@ -28,9 +28,10 @@ export class TransactionService {
   }
 
   async getTransaction(accountNumber: string, transactionId: number) {
-    const transaction = await this.transactionsRepository.findOne(
-      transactionId,
-    );
+    let transaction;
+    if (!isNaN(transactionId)) {
+      transaction = await this.transactionsRepository.findOne(transactionId);
+    }
 
     if (
       !transaction ||

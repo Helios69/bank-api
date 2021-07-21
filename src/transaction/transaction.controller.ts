@@ -55,7 +55,7 @@ export class TransactionController {
   getTransactionById(@Req() request: RequestWithUser) {
     const { user, params } = request;
 
-    return this.transactionService.getTransaction(
+    return this.transactionService.getUserTransaction(
       user.account.accountNumber,
       Number(params.transactionId),
     );

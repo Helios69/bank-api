@@ -7,6 +7,8 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AccountModule } from './account/account.module';
 import { TransactionModule } from './transaction/transaction.module';
+import { BullModule } from '@nestjs/bull';
+import { TransactionsConsumer } from './transaction/transaction.consumer';
 
 @Module({
   imports: [
@@ -20,6 +22,12 @@ import { TransactionModule } from './transaction/transaction.module';
       database: process.env.DB_DATABASE,
       autoLoadEntities: true,
       synchronize: true,
+    }),
+    BullModule.forRoot({
+      redis: {
+        host: process.env.REDIS_HOST,
+        port: +process.env.REDIS_PORT,
+      },
     }),
     UserModule,
     AuthModule,

@@ -37,9 +37,21 @@ export class UserService {
     return user;
   }
 
+  generateAccountNumber() {
+    let accountNumber = '';
+
+    for (let i = 0; i < 4; i++) {
+      accountNumber += `${Math.floor(1000 + Math.random() * 9000)} `;
+    }
+
+    return accountNumber.trim();
+  }
+
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     try {
-      const account = this.accountRepository.create();
+      const account = this.accountRepository.create({
+        accountNumber: this.generateAccountNumber(),
+      });
       const hashedPassword = await hash(createUserDto.password, 10);
       const user = this.usersRepository.create({
         ...createUserDto,

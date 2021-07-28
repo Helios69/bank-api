@@ -14,7 +14,6 @@ export class Account {
   id: number;
 
   @Column()
-  @Generated('uuid')
   accountNumber: string;
 
   @Column({ type: 'decimal', default: 100.5 })

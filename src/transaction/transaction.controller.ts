@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthenticationGuard } from 'src/auth/guards/jwtAuthentication.guard';
 import { RequestWithUser } from 'src/auth/interfaces/requestWithUser.interface';
 import { TransactionService } from './transaction.service';
@@ -70,5 +78,11 @@ export class TransactionController {
       user.account.accountNumber,
       body,
     );
+  }
+
+  @Get('transaction/:transactionId/cancel')
+  @UseGuards(JwtAuthenticationGuard)
+  cancelTransaction(@Param('transactionId') transactionId: number) {
+    return this.transactionService.moveToCanceled(transactionId);
   }
 }

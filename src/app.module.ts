@@ -9,6 +9,7 @@ import { AccountModule } from './account/account.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { BullModule } from '@nestjs/bull';
 import { TransactionsConsumer } from './transaction/transaction.consumer';
+import { VideoModule } from './video/video.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { TransactionsConsumer } from './transaction/transaction.consumer';
     AuthModule,
     AccountModule,
     TransactionModule,
+    VideoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

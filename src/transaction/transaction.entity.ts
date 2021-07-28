@@ -6,13 +6,13 @@ export class Transaction {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true })
+  @Column({ default: '' })
   description: string;
 
   @Column()
   amount: number;
 
-  @Column({ default: Currency.USD })
+  @Column({ default: Currency.LEI })
   currency: Currency;
 
   @Column()
@@ -26,4 +26,7 @@ export class Transaction {
 
   @Column({ default: TransactionStatuses.CREATED })
   status: TransactionStatuses;
+
+  @Column({ nullable: true })
+  jobId: string;
 }

@@ -20,9 +20,6 @@ export class Account {
   @Column({ type: 'decimal', default: 100.5 })
   amount: number;
 
-  @Column({ default: Currency.USD })
-  currency: Currency;
-
   @OneToOne(() => User)
   user: User;
 }

@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   HttpCode,
   Post,
@@ -6,6 +7,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { ApiResponse } from '@nestjs/swagger';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { LocalAuthenticationGuard } from './guards/localAuthentication.guard';
@@ -17,6 +19,7 @@ export class AuthController {
 
   @HttpCode(200)
   @UseGuards(LocalAuthenticationGuard)
+  @ApiResponse({ status: 200, description: 'Sign in using email and password' })
   @Post('/sign-in')
   signIn(@Req() request: RequestWithUser, @Res() response: Response) {
     const { user } = request;

@@ -5,15 +5,13 @@ import {
   HttpStatus,
   Injectable,
   InternalServerErrorException,
-  NotAcceptableException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Job, Queue } from 'bull';
+import { Queue } from 'bull';
 import { AccountService } from 'src/account/account.service';
 import { CURRENCIES } from 'src/common/constants';
 import { Currency, TransactionStatuses } from 'src/common/enums';
-import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
@@ -75,8 +73,6 @@ export class TransactionService {
   }
 
   transformCurrency(amount: number, currency: Currency) {
-    console.log(amount, currency, CURRENCIES[currency]);
-
     return amount * CURRENCIES[currency];
   }
 
@@ -116,7 +112,6 @@ export class TransactionService {
 
       return newTransaction;
     } catch (error) {
-      console.log('error: ', error);
       throw new HttpException(
         'Something went wrong',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -155,8 +150,6 @@ export class TransactionService {
         status: TransactionStatuses.CANCELED,
       });
     } catch (e) {
-      console.log(e);
-
       throw new InternalServerErrorException();
     }
   }
@@ -172,7 +165,6 @@ export class TransactionService {
       const destinationAccount = await this.accountService.getAccountByNumber(
         transaction.destinationAccount,
       );
-
       const transactionAmount = this.transformCurrency(
         transaction.amount,
         transaction.currency,
@@ -198,10 +190,7 @@ export class TransactionService {
         status: TransactionStatuses.COMPLETE,
       });
     } catch (e) {
-      console.log('e: ', e);
       throw new InternalServerErrorException();
     }
   }
 }
-
-//config set stop-writes-on-bgsave-error no

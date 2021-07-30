@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
@@ -11,12 +12,15 @@ import { JwtAuthenticationGuard } from 'src/auth/guards/jwtAuthentication.guard'
 import { RequestWithUser } from 'src/auth/interfaces/requestWithUser.interface';
 import { TransactionService } from './transaction.service';
 import { Parser } from 'json2csv';
+import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { ApiResponse } from '@nestjs/swagger';
 
 @Controller('transactions')
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
   @Get()
+  @ApiResponse({ status: 200, description: 'Get all user`s transactions' })
   @UseGuards(JwtAuthenticationGuard)
   getMyTransactions(@Req() request: RequestWithUser) {
     const { user } = request;
@@ -26,6 +30,10 @@ export class TransactionController {
   }
 
   @Get('/download')
+  @ApiResponse({
+    status: 200,
+    description: 'Download all user`s transactions in CSV',
+  })
   @UseGuards(JwtAuthenticationGuard)
   async downloadTransactionsCSV(
     @Req() request: RequestWithUser,
@@ -59,6 +67,7 @@ export class TransactionController {
   }
 
   @Get('transaction/:transactionId')
+  @ApiResponse({ status: 200, description: 'Get transaction by id' })
   @UseGuards(JwtAuthenticationGuard)
   getTransactionById(@Req() request: RequestWithUser) {
     const { user, params } = request;
@@ -70,17 +79,22 @@ export class TransactionController {
   }
 
   @Post()
+  @ApiResponse({ status: 201, description: 'Create transaction' })
   @UseGuards(JwtAuthenticationGuard)
-  createTransaction(@Req() request: RequestWithUser) {
-    const { user, body } = request;
+  createTransaction(
+    @Req() request: RequestWithUser,
+    @Body() createTransactionDto: CreateTransactionDto,
+  ) {
+    const { user } = request;
 
     return this.transactionService.createTransaction(
       user.account.accountNumber,
-      body,
+      createTransactionDto,
     );
   }
 
   @Get('transaction/:transactionId/cancel')
+  @ApiResponse({ status: 200, description: 'Cancel transaction' })
   @UseGuards(JwtAuthenticationGuard)
   cancelTransaction(@Param('transactionId') transactionId: number) {
     return this.transactionService.moveToCanceled(transactionId);

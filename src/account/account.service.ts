@@ -30,8 +30,6 @@ export class AccountService {
         amount,
       });
     } catch (e) {
-      console.log(e);
-
       throw new InternalServerErrorException();
     }
   }
